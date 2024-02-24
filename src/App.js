@@ -1,25 +1,45 @@
-import logo from './logo.svg';
-import './App.css';
+import React, {useState, useEffect} from 'react'
+import './App.css'
 
-function App() {
+
+const title = <h1>Riky&Morty</h1>
+const titleStyle= {textAlign: 'center'}
+const Card = (props)=> {
+ const {image, name, status, species} = props.characther;
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+   <div className='card'>
+    <img src={image} alt='img'/>
+    <h2>{name}</h2>
+    <p>{status} - {species}</p>
+
+   </div>
+  )
+}
+const App = () => {
+  const [data , setDate] = useState([])
+
+useEffect(() =>{
+   fetch('https://rickandmortyapi.com/api/character').then(res => res.json()).then(body=>{
+    setDate(body.results)
+   })
+}, [])
+
+  return (
+    <>
+    <div style={titleStyle}>
+    {title}
     </div>
-  );
+    <section className='card-section'>
+      {
+        data.map(el => (
+          
+          <Card characther={el} key={el.id} />
+          ))
+        }
+    </section>
+        </>
+  )
 }
 
 export default App;
